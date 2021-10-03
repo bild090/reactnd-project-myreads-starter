@@ -28,11 +28,12 @@ class Search extends React.Component {
           searchBooks.map(book => (this.props.books.filter((b) => b.id === book.id).map(b => book.shelf = b.shelf)))
           this.setState({searchBooks})
         }
-        else {
-          this.setState(() => ({
-            searchBooks: []
-          }))
-        }
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState(() => ({
+          searchBooks: []
+        }))
       })
   }
 
