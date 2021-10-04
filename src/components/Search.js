@@ -19,28 +19,23 @@ class Search extends React.Component {
 
   updateQuery = (query) => {
     this.setState(() => ({
-      query: query
+      query: query.trim()
     })
     )
-      BooksAPI.search(query)
+    BooksAPI.search(query)
       .then((searchBooks) => {
-        
-        if(query === ''){
 
+        if (query === '' || searchBooks.error) {
           this.setState(() => ({
             searchBooks: []
           })
           )
         }
-
-        if (searchBooks !== undefined) {
+        if (searchBooks !== undefined && Array.isArray(searchBooks)) {
           searchBooks.map(book => (this.props.books.filter(b => b.id === book.id).map(b => book.shelf = b.shelf)))
-          this.setState({searchBooks})
+          this.setState({ searchBooks })
         }
-
       })
-      .catch(error => {
-      }) 
   }
 
   render() {
@@ -80,7 +75,7 @@ class Search extends React.Component {
                           backgroundImage: book.imageLinks !== undefined ? `url(${book.imageLinks.thumbnail})` : ''
                         }}></div>
                         <div className="book-shelf-changer">
-                          <select onChange={(event) => moveTo(book, event.target.value)} defaultValue={book.shelf || ''} >
+                          <select onChange={(event) => moveTo(book, event.target.value)} defaultValue={book.shelf || 'none'} >
                             <option value="move" disabled>Move to...</option>
                             <option></option>
                             <option value="currentlyReading">Currently Reading</option>
