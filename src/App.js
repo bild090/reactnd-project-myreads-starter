@@ -24,20 +24,26 @@ class App extends React.Component {
   };
 
   moveTo = (book ,event) => {
-    console.log('book', book);
-    console.log('event', event);
     let newBooks = [...this.state.books];
-    for(const b of newBooks){
-      if(book.id === b.id){
-        b.shelf = event
+    
+    if(newBooks.includes(book)){
+      for(const b of newBooks){
+        if(book.id === b.id){
+          b.shelf = event
+        }
       }
     }
-    console.log(newBooks);
+    else{
+      book.shelf = event;
+      newBooks.push(book);
+    }
+
+    
     this.setState(() =>({
       books: newBooks
     }))
 
-    // BooksAPI.update(book, event)
+    BooksAPI.update(book, event)
   }
 
   render() {

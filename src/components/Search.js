@@ -22,24 +22,27 @@ class Search extends React.Component {
       query: query
     })
     )
-    BooksAPI.search(query)
+      BooksAPI.search(query)
       .then((searchBooks) => {
+        
+        if(query === ''){
+
+          this.setState(() => ({
+            searchBooks: []
+          })
+          )
+        }
+
         if (searchBooks !== undefined) {
-          searchBooks.map(book => (this.props.books.filter((b) => b.id === book.id).map(b => book.shelf = b.shelf)))
+          searchBooks.map(book => (this.props.books.filter(b => b.id === book.id).map(b => book.shelf = b.shelf)))
           this.setState({searchBooks})
         }
+
       })
       .catch(error => {
-        console.log(error);
-        this.setState(() => ({
-          searchBooks: []
-        }))
-      })
+      }) 
   }
 
-  clearQuery = () => {
-    this.updateQuery('')
-  }
   render() {
     const { query, searchBooks } = this.state;
     const { moveTo } = this.props;
